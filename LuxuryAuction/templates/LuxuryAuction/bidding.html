@@ -1,0 +1,99 @@
+{% extends "LuxuryAuction/base.html" %}
+
+{% block content %}
+
+{% for item in items %}
+<script>
+
+var countDownDate = new Date('{{item.ending_time|escapejs}}').getTime()
+// Update the count down every 1 second
+var x = setInterval(function() {
+
+// Get today's date and time
+var now = new Date().getTime();
+var start = new Date('{{item.starting_time|escapejs}}').getTime()
+
+// Find the distance between now and the count down date
+var distance = countDownDate - now;
+
+// Time calculations for days, hours, minutes and seconds
+var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+// Output the result in an element with id="demo"
+
+if (countDownDate>=now){
+document.getElementById("demo2").innerHTML = "Time Left: "+days + "d " + hours + "h "
++ minutes + "m " + seconds + "s ";
+}
+else{
+  // timecountdown({{item.id}});
+
+  document.getElementById("demo2").innerHTML='The auction is ended';
+
+  if (document.getElementById("Bidarea").hasChildNodes()){
+      document.getElementById("Bidarea").innerHTML="";
+  }
+
+
+}
+
+
+if (distance < 0) {
+  clearInterval(x);
+  var interval = setInterval(function(){
+     timecountdown({{item.id}});
+   },1000)
+
+   var interval = setInterval(function(){
+     getCurrentBid({{item.id}});
+({{item.id}});
+    },1000)
+}
+}, 1000);
+
+var interval = setInterval(function(){
+   getCurrentBid({{item.id}});
+ },2000)
+
+window.setInterval(getCurrentBid({{item.id}}), 100);
+
+window.onload = getCurrentBid({{item.id}});
+window.onload = biddingbutton({{item.id}});
+
+</script>
+
+<div class="ProductDetail" id="filterDiv painting">
+  <h3 class="ProductName" style="text-align:center;">{{item.title}}</h3>
+  <br>
+  <img class="ProductImage" src="{% url 'photo' item.id %}"   style="width:200px;height:200px;">
+  <div class="ProductInfo">
+    <h4 >{{item.description|linebreaks}}</h4>
+    <br>
+    <br>
+    <h4 >Starting Bid: US {{item.starting_bid}}</h4>
+    <h4 >Starting time: {{item.starting_time| date:"n/j/Y g:i A e"}}</h4>
+    <h4 >Ending time: {{item.ending_time| date:"n/j/Y g:i A e"}}</h4>
+    <div><button class="btn" onclick="window.open('mailto:luxury.auctions123@gmail.com');"><strong>Enquire </strong></button></div>
+    <h3 id="demo2" style="text-align: center;"></h3>
+    <h3 id="timeleft" style="text-align: center;"></h3>
+    <h3 id="CurrentBid">  </h3>
+    <h3 id="winner" align="center"> </h3>
+    <h3 id="payment" align="center"> </h3>
+    <div id="Bidarea" align="center" ></div>
+
+
+    </div>
+</div>
+  {% endfor %}
+
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+{% endblock %}

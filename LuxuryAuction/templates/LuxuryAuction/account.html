@@ -1,0 +1,145 @@
+{% extends "LuxuryAuction/base.html" %}
+{% block content %}
+<script>
+function myFunction(elementID) {
+ var profileSection = document.getElementById("profile_section");
+ var pastAuction = document.getElementById("past_auction");
+ var currentAuction = document.getElementById("current_auction");
+ var editProfile = document.getElementById("edit_profile");
+
+ if (elementID == "profile_section") {
+     profileSection.style.display = "block";
+     pastAuction.style.display ="none";
+     currentAuction.style.display = "none";
+     edit_profile.style.display = "none";
+ } else if (elementID == "past_auction") {
+     profileSection.style.display = "none";
+     pastAuction.style.display ="block";
+     currentAuction.style.display = "none";
+     edit_profile.style.display = "none";
+ } else if (elementID == "current_auction") {
+     profileSection.style.display = "none";
+     pastAuction.style.display ="none";
+     currentAuction.style.display = "block";
+     edit_profile.style.display = "none";
+ } else if (elementID == "edit_profile") {
+     profileSection.style.display = "none";
+     pastAuction.style.display ="none";
+     currentAuction.style.display = "none";
+     edit_profile.style.display = "block";
+ }
+}
+</script>
+
+  <div class="row" class=".accountContent">
+    <div class="col-sm-2" >
+
+        <button type="button" class="btn btn-primary btn-lg btn-block" onclick="myFunction('profile_section')" style="background-color:#2F4F4F; color:white;">Profile</button>
+        <button type="button" class="btn btn-primary btn-lg btn-block" onclick="myFunction('past_auction')" style="background-color:#2F4F4F; color:white;">Past Auction</button>
+        <button type="button" class="btn btn-primary btn-lg btn-block" onclick="myFunction('current_auction')" style="background-color:#2F4F4F; color:white;">Current Auction</button>
+
+    </div>
+
+    <div class="col-sm-10" style="background-color: rgb(248, 248, 248, 0.8);">
+    <div id ="profile_section">
+        <h2 class="text-center">Profile Information</h2>
+        <button style=" margin-left: 90%; background-color:#2F4F4F; color:white;" onclick="myFunction('edit_profile')"type="button">Edit Profile</button>
+        <p>{{user.first_name}} {{user.last_name}}</p>
+        <p>Age: {{UserProfile.age}}</p>
+        <p>Phone Number: {{UserProfile.phone_number}}</p>
+        <p>Address: {{UserProfile.address}}</p>
+        <p>City: {{UserProfile.city}}</p>
+        <p>State: {{UserProfile.state}}</p>
+        <p>Email: {{user.email}}</p>
+
+        {% comment %} {% for field in allProfileFields %}
+
+        <p>{{field.name}} : </p>
+        {% endfor %} {% endcomment %}
+    </div>
+    <div id="past_auction" style="display: none;" >
+        <h2 class="text-center">Past Auction</h2>
+        <div class="container">
+        {%for product in pastBidding%}
+          <div class="ProductHomePageContainer">
+                 <div class="row">  
+                  <h3 class="text-center">{{ product.title }}</h3>
+                 <br>
+                     <div class="col-sm-4" >
+                        <img src="{% url 'photo' product.id %}" style="width:200px;height:200px;   margin-left: 30%;" >
+                         <br>
+                        <h4 class="text-center">Category: {{ product.category}}</h4>
+                    </div>
+                    <div class="col-sm-6">
+                    description: {{ product.description }}
+                    </div>
+                     {% if product in winBid%}
+                         {% if product.isPaid %}
+                             <a style="color:#2F4F4F; font-size: 1vw;text-decoration: none"><strong>Paid</strong></a>
+                         {% else %}
+                             <a href="{% url 'calculate-view' product.id %}"   style="color:#2F4F4F; font-size: 1vw"><strong>Click to Pay</strong></a>
+                         {% endif %}
+                     {% else %}
+                         <a style="color:#2F4F4F; font-size: 1vw;text-decoration: none"><strong>Not Winner</strong></a>
+                     {% endif %}
+                </div>
+            </div>
+        {%endfor%}
+        </div>
+        {% comment %} <p>No auction history</p> {% endcomment %}
+
+    </div>
+    <div id="current_auction" style="display: none;" >
+        <h2 class="text-center">Current Auction</h2>
+        
+        <div class="container">
+        
+         {%for product in currentBidding%}
+        
+            <div class="ProductHomePageContainer">
+                 <div class="row">  
+                  <h3 class="text-center">{{ product.title }}</h3>
+                 <br>
+                     <div class="col-sm-4" >
+                        <img src="{% url 'photo' product.id %}" style="width:200px;height:200px;   margin-left: 30%;" >
+                         <br>
+                        <h4 class="text-center">Category: {{ product.category}}</h4>
+                    </div>
+                    <div class="col-sm-6">
+                    description: {{ product.description }}
+                    </div>
+                </div>
+            </div>
+        {%endfor%}
+        
+        </div>
+        
+    </div>
+
+
+    <div id="edit_profile" class="container"style="display: none;">
+        <h2 class="text-center">Edit your Profile</h2>
+        <div class="card card-container">
+            <form method="post" action="{% url 'edit-profile' %}" >
+                    {% for field in form.visible_fields %}
+                            {{field.name}}{{field}}
+                            <span class="error">
+                                {% for error in field.errors %} {{error}} {% endfor %}
+                            </span>
+                    {% endfor %}
+                {% csrf_token %}
+                <br>
+                <div class="text-center">
+                <button class="btn-primary btn-lg btn-signin" type="submit">edit</button>
+                </div>
+                 <br>
+            </form>
+        </div><!-- /card-container -->
+    </div>
+    </div>
+  </div>
+</div>
+
+
+
+{% endblock %}

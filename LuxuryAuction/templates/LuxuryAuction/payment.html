@@ -1,0 +1,82 @@
+{% extends "LuxuryAuction/base.html" %}
+{% load crispy_forms_tags %}
+{% block  content%}
+
+<div class="container">
+
+<br>
+<div class="row">
+
+{#    <div class="col-sm-6" >#}
+{#    {{map | safe}}#}
+{#    </div>#}
+{##}
+{#    <div class="col-sm-4">#}
+{#        <h3>Distance is {{distance}} km</h3>#}
+{#        <h3>estimated deliveray time is {{days}} days</h3>#}
+{#        <form action="" method="POST" autocomplete="off">#}
+{#            {% csrf_token %}#}
+{#            {{form|crispy}}#}
+{#            <button type="submit" class="btn btn-primary">confirm</button>#}
+{#        </form>#}
+{#    </div>#}
+</div>
+<br>
+  <div id="paypal-button-container"></div>
+
+    <!-- Include the PayPal JavaScript SDK -->
+    <script src="https://www.paypal.com/sdk/js?client-id=AYzdyxoDM0D5Prl9pMLjzdy3OYXfF6-jrs_vWWNbB571SIh8GTujFEaxvGtlnLMhdv1H0TESrE9KGHGm&currency=USD&disable-funding=credit"></script>
+
+    <script>
+        // Render the PayPal button into #paypal-button-container
+        if({{ displayButton }} == 1)
+        {
+            paypal.Buttons({
+                createOrder: function (data, actions) {
+                    return actions.order.create({
+                        purchase_units: [{
+                            amount: {
+                                value: '{{ price }}'
+                            }
+                        }]
+                    });
+                },
+
+                // Finalize the transaction
+                onApprove: function (data, actions) {
+                    return actions.order.capture().then(function (details) {
+                        submitPayment(details.purchase_units['0'].amount.value)
+                    });
+                }
+            }).render('#paypal-button-container');
+        }
+
+    </script>
+    <script>
+        function submitPayment(price) {
+            $.ajax({
+                url: "/payment/{{ product_id }}/paid",
+                type: "POST",
+                data: {"price": price,  "csrfmiddlewaretoken": getCSRFToken()},
+                dataType: "json",
+                success:function(data,status){
+                    alert(data.message);
+                    window.location = '/profile'
+
+                }
+            })
+        }
+        function getCSRFToken() {
+            let cookies = document.cookie.split(";")
+            for (let i = 0; i < cookies.length; i++) {
+                let c = cookies[i].trim()
+                if (c.startsWith("csrftoken=")) {
+                    return c.substring("csrftoken=".length, c.length)
+                }
+            }
+            return "unknown"
+        }
+    </script>
+    <h3 style="text-align: center">{{ message }}</h3>
+</div>
+{% endblock content %}

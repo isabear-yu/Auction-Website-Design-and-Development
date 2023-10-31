@@ -1,0 +1,126 @@
+{% extends "LuxuryAuction/base.html" %}
+
+{% block content %}
+<script>
+// Set the date we're counting down to
+var countDownDate = new Date(" Nov 2, 2020 15:37:25").getTime();
+
+// Update the count down every 1 second
+var x = setInterval(function() {
+
+// Get today's date and time
+var now = new Date().getTime();
+
+// Find the distance between now and the count down date
+var distance = countDownDate - now;
+
+// Time calculations for days, hours, minutes and seconds
+var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+// Output the result in an element with id="demo"
+document.getElementById("demo").innerHTML = "Time Left: "+days + "d " + hours + "h "
++ minutes + "m " + seconds + "s ";
+
+document.getElementById("demo1").innerHTML = "Time Left: "+days + "d " + hours + "h "
++ minutes + "m " + seconds + "s ";
+document.getElementById("demo2").innerHTML = "Time Left: "+days + "d " + hours + "h "
++ minutes + "m " + seconds + "s ";
+document.getElementById("demo3").innerHTML = "Time Left: "+days + "d " + hours + "h "
++ minutes + "m " + seconds + "s ";
+document.getElementById("demo4").innerHTML = "Time Left: "+days + "d " + hours + "h "
++ minutes + "m " + seconds + "s ";
+document.getElementById("demo5").innerHTML = "Time Left: "+days + "d " + hours + "h "
++ minutes + "m " + seconds + "s ";
+// If the count down is over, write some text
+if (distance < 0) {
+  clearInterval(x);
+  document.getElementById("demo").innerHTML = "EXPIRED";
+  document.getElementById("demo1").innerHTML = "EXPIRED";
+  document.getElementById("demo2").innerHTML = "EXPIRED";
+  document.getElementById("demo3").innerHTML = "EXPIRED";
+  document.getElementById("demo4").innerHTML = "EXPIRED";
+  document.getElementById("demo5").innerHTML = "EXPIRED";
+}
+}, 1000);
+
+</script>
+
+<form class="example" action="/action_page.php" style="margin:auto;max-width:300px">
+  <input type="text" placeholder="Search.." name="search2">
+  <button type="submit"><i class="fa fa-search"></i></button>
+</form>
+
+<br>
+<br>
+
+
+<span id="myBtnContainer">
+  <button class="btn active" onclick="filterSelection('all')" style="color:#2F4F4F;"> <strong>Show all</strong></button>
+  <button class="btn" onclick="filterSelection('jewelry')" style="color:#2F4F4F;"> <strong>Jewelry</strong></button>
+  <button class="btn" onclick="filterSelection('painting')" style="color:#2F4F4F;"><strong> Painting</strong></button>
+</span>
+
+<br>
+<br>
+</div>
+<div class="container">
+  <div class="row">
+    <div class="col-sm-4" id="filterDiv jewelry">
+      <h3 >Diamond Eternity Ring</h3>
+      <img src="https://christies.shorthandstories.com/jewellery-privatesales/assets/4MbG6zsXua/diamond-eternity-ring-jewellery-private-sales-christies-900x899.jpeg"  style="width:128px;height:128px;">
+      <br>
+      <h4>Diamonds 13.05 carats total</h4>
+      <h4>White gold</h4>
+      <h4>13 GIA Reports</h4>
+      <h4>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris...</h4>
+      <h3 id="demo"></h3>
+      <button class="btn" style="color:#2F4F4F;"><strong><a href="{% url 'bidding' %}" id='id_nav_bidding_page' style="color:#2F4F4F;">Bid now!</a></strong></button>
+      <h4 id="price">Starting Bid: US 2,400</h4>
+    </div>
+
+    <div class="col-sm-4" id="filterDiv painting">
+      <h3 >Giraffe by Reginald Baxter</h3>
+      <img src="https://a.1stdibscdn.com/oil-painting-on-canvas-of-a-giraffe-by-reginald-baxter-for-sale/1121189/f_91471411601118610906/9147141_master.jpg?disable=upscale&auto=webp&quality=60&width=960"  style="width:128px;height:128px;">
+      <br>
+      <h4>Dimensions Height: 50 in. (127 cm) Width: 50 in. (127 cm) Depth: 2 in. (5.08 cm)</h4>
+      <h4>Date of Manufacture: circa 1980</h4>
+      <h4>Materials and Techniques: Paint</h4>
+      <br>
+      <h3 id="demo2"></h3>
+      <button class="btn" style="color:#2F4F4F;"><strong><a href="{% url 'bidding' %}" id='id_nav_bidding_page' style="color:#2F4F4F;">Bid now!</a></strong></button>
+      <h4 id="price">Starting Bid: US 1,200</h4>
+    </div>
+
+    <div class="col-sm-4" id="filterDiv jewelry">
+      <h3 >Emerald Ear Pendants</h3>
+      <img src="https://christies.shorthandstories.com/jewellery-privatesales/assets/uYpgLJTiKg/emerald-and-diamond-ear-pendants-jewellery-private-sales-christies-900x1005.jpeg"  style="width:128px;height:128px;">
+      <br>
+      <h4>13.79ct and 13.25ct Colombia Minor cabochon-cut emeralds</h4>
+      <h4>Platinum</h4>
+      <h4>Gübelin Report No. 12071009 and 10</h4>
+      <h4>AGL Report No. CS 51474 and 75</h4>
+      <h3 id="demo1"></h3>
+      <button class="btn" style="color:#2F4F4F;"><strong><a href="{% url 'bidding' %}" id='id_nav_bidding_page' style="color:#2F4F4F;">Bid now!</a></strong></button>
+      <h4 id="price">Starting Bid: US 1,600</h4>
+
+    </div>
+
+
+    <div class="col-sm-4" id="filterDiv painting">
+      <br>
+      <br>
+      <h3 >Graphic Series 6</h3>
+      <img src="https://images.squarespace-cdn.com/content/v1/5c1177c7a9e028bfc52b2120/1574100215829-GUUMCHYEOPPJRQGWTETJ/ke17ZwdGBToddI8pDm48kNiEM88mrzHRsd1mQ3bxVct7gQa3H78H3Y0txjaiv_0fDoOvxcdMmMKkDsyUqMSsMWxHk725yiiHCCLfrh8O1z4YTzHvnKhyp6Da-NYroOW3ZGjoBKy3azqku80C789l0s0XaMNjCqAzRibjnE_wBlkZ2axuMlPfqFLWy-3Tjp4nKScCHg1XF4aLsQJlo6oYbA/IMG_9578.jpeg?format=2500w"  style="width:128px;height:128px;">
+      <br>
+      <h4>Acrylic and resin on canvas.</h4>
+      <h4>Set in handmade hand </h4>
+      <h4>painted gold frame.</h4>
+      <h4>5ft x 6ft</h4>
+      <h3 id="demo3"></h3>
+      <button class="btn" style="color:#2F4F4F;"><strong><a href="{% url 'bidding' %}" id='id_nav_bidding_page' style="color:#2F4F4F;">Bid now!</a></strong></button>
+      <h4 id="price">Starting Bid: US 1,200</h4>
+  </div>
+{% endblock %}

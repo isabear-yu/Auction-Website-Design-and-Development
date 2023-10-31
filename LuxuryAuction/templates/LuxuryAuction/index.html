@@ -1,0 +1,84 @@
+{% extends "LuxuryAuction/base.html" %}
+
+{% block content %}
+<script>
+function serchfunction() {
+
+}
+</script>
+
+<form class="example" action={% url 'searchproducts'%} method="POST" style="margin:auto;max-width:300px">
+  <input type="text" placeholder="Search.." name="search2" id="searchText">
+  <button type="submit"><i class="fa fa-search"></i></button>
+  <div class="error">
+  {{searchError}} 
+ </div>
+  {% csrf_token %}
+</form>
+
+<br>
+<br>
+<div style="background-color: rgba(248, 248, 248, 0.6);">
+<span id="myBtnContainer">
+  <form>
+    <button class="btn" type="submit" formenctype="multipart/form-data" formmethod="post"
+    formaction="{% url 'getproducts' 'All' %}" value="All" style="color:#2F4F4F;"><strong>Show All</strong></button>
+    {% csrf_token %}
+    <button class="btn" type="submit" formenctype="multipart/form-data" formmethod="post"
+    formaction="{% url 'getproducts' 'Jewelry' %}" value="All" style="color:#2F4F4F;"><strong>Jewelry</strong></button>
+    {% csrf_token %}
+    <button class="btn" type="submit" formenctype="multipart/form-data" formmethod="post"
+    formaction="{% url 'getproducts' 'Art' %}" value="All" style="color:#2F4F4F;"><strong>Art</strong></button>
+    {% csrf_token %}
+    <button class="btn" type="submit" formenctype="multipart/form-data" formmethod="post"
+    formaction="{% url 'getproducts' 'Clothing' %}" value="All" style="color:#2F4F4F;"><strong>Clothing</strong></button>
+    {% csrf_token %}
+    <button class="btn" type="submit" formenctype="multipart/form-data" formmethod="post"
+    formaction="{% url 'getproducts' 'Cars' %}" value="All" style="color:#2F4F4F;"><strong>Cars</strong></button>
+    {% csrf_token %}
+    <button class="btn" type="submit" formenctype="multipart/form-data" formmethod="post"
+    formaction="{% url 'getproducts' 'Movie Props' %}" value="All" style="color:#2F4F4F;"><strong>Movie Props</strong></button>
+    {% csrf_token %}
+  </form>
+</span>
+<br>
+<br>
+<div class="container">
+  <table class="ProductList" id="product-list">
+  {% for product in product_list %}
+    <tr>
+      <div class="col-sm-4">
+      <div class="ProductHomePageContainer">
+        <div class="ProductHomePage" id='{{product.id}}'>
+          {{ product.title }}
+          <br>
+          <img src="{% url 'photo' product.id %}" style="width:200px;height:200px;">
+          <br>
+          Category:<br> {{ product.category}}
+=======
+          <br>
+          Starting Price: <br>${{ product.starting_bid }}
+          <br>
+          Start Time: {{ product.starting_time | date:"n/j/Y g:i A e"}}
+          <br>
+          End Time: {{ product.ending_time | date:"n/j/Y g:i A e"}}
+          <br>
+          {% if product in available_list %}
+            <form enctype="multipart/form-data" action="{% url 'bidding' product.id %}" method="get">
+              <button class="btn" type="submit" value="Bidding" style="color:#2F4F4F;"><strong>Bid on Item</strong></button>
+              {% csrf_token %}
+            </form>
+          {% else %}
+            <button class="btn" type="submit" value="Bidding" disabled style="color:#2F4F4F;"><strong>Bid Unavailable</strong></button>
+          {% endif %}
+        </div>
+      </div>
+      </div>
+    </tr>
+
+  {% endfor %}
+
+  </table>
+</div>
+</div>
+{% endblock %}
