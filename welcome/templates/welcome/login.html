@@ -1,0 +1,39 @@
+{% extends "welcome/base.html" %}
+
+
+
+{% block content %}
+{% load static %}
+<link href="{% static 'welcome/login.css' %}" rel="stylesheet">
+    <div class="container">
+        <div class="card card-container">
+            <img id="profile-img" class="profile-img-card" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" />
+            <p id="profile-name" class="profile-name-card"></p>
+            <form method="post" action="{% url 'login' %}" class="form-signin">
+                <span id="reauth-email" class="reauth-email"></span>
+                {{form.username}}
+                {{form.password}}
+                <span class="error">
+                        {% for error in field.errors %} {{error}} {% endfor %}
+                </span>
+{#                <div id="remember" class="checkbox">#}
+{#                    <label>#}
+{#                        <input type="checkbox" value="remember-me"> Remember me#}
+{#                    </label>#}
+{#                </div>#}
+                {% csrf_token %}
+                <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Login</button>
+                <a href="{% url 'register' %}" class="register">
+                    Register
+                </a>
+            </form>
+        </div><!-- /card-container -->
+    </div><!-- /container -->
+
+    {% for error in form.non_field_errors %}
+        <h1 class="error" style="margin: auto">
+            {{ error }}
+        </h1>
+    {% endfor %}
+
+{% endblock %}

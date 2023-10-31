@@ -1,0 +1,31 @@
+{% extends "welcome/base.html" %}
+
+
+{% block content %}
+{% load static %}
+<link href="{% static 'welcome/register.css' %}" rel="stylesheet">
+    <div class="container">
+        <div class="card card-container">
+            <form method="post" action="{% url 'register' %}" class="form-register">
+                    {% for field in form.visible_fields %}
+                            {{field}}
+                            <span class="error">
+                                {% for error in field.errors %} {{error}} {% endfor %}
+                            </span>
+                    {% endfor %}
+                {% csrf_token %}
+                <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Register</button>
+                <a href="{% url 'login' %}" class="login">
+                    Login
+                </a>
+            </form>
+        </div><!-- /card-container -->
+    </div><!-- /container -->
+
+    {% for error in form.non_field_errors %}
+        <h1 class="error" style="left: 50%">
+            {{ error }}
+        </h1>
+    {% endfor %}
+
+{% endblock %}
